@@ -1,0 +1,41 @@
+# Kiro AI Team Configuration
+
+# Kiro CLI settings
+kiro:
+  cli_path: "kiro-cli"  # Path to kiro-cli binary, or just "kiro-cli" if on PATH
+  default_model: "auto"
+
+# Default project directory (can be overridden per task)
+project:
+  default_path: "/path/to/your/android-project"
+
+# Jira integration (optional)
+jira:
+  base_url: "https://your-company.atlassian.net"
+  email: "your-email@company.com"
+  api_token: "YOUR_JIRA_API_TOKEN"
+  project_key: "ANDROID"
+
+# Worker settings
+workers:
+  developer:
+    enabled: true
+    focus_areas: ["feature-development", "bug-fixes", "refactoring"]
+  qa:
+    enabled: true
+    focus_areas: ["code-review", "test-coverage", "bug-detection"]
+  architect:
+    enabled: true
+    focus_areas: ["architecture", "design-patterns", "tech-debt"]
+  code_owner:
+    enabled: true
+    focus_areas: ["module-ownership", "pr-approval", "standards"]
+  reviewer:
+    enabled: true
+    focus_areas: ["pr-review", "code-quality", "best-practices"]
+  product_owner:
+    enabled: true
+    focus_areas: ["requirements", "user-stories", "acceptance-criteria"]
+  business_analyst:
+    enabled: true
+    focus_areas: ["technical-specs", "data-flow", "requirements-analysis"]

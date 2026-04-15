@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+config.yaml
+.venv/
+*.egg-info/
+dist/
+build/
+.kiro/
+tetris.py
+weather.py
+weather_app.py
+test_weather_app.py
