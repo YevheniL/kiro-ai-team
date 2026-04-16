@@ -7,7 +7,7 @@ kiro:
 
 # Default project directory (can be overridden per task)
 project:
-  default_path: "/path/to/your/android-project"
+  default_path: "."  # Current directory, or set to your project path
 
 # Jira integration (optional)
 jira:

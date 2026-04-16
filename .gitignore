@@ -7,7 +7,10 @@ config.yaml
 dist/
 build/
 .kiro/
-tetris.py
-weather.py
-weather_app.py
-test_weather_app.py
+.pytest_cache/
+
+# Task output (generated at runtime)
+projects/
+
+# Stray artifacts from test runs
+*.py.bak

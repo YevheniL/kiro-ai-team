@@ -19,6 +19,29 @@ When you submit a task, the orchestrator routes it through a structured pipeline
 
 All output streams in real time so you can watch each worker think, hand off context, and build on each other's work.
 
+### Task Output Structure
+
+Each task gets its own project folder under `projects/` with a clean, human-readable name derived from your task description. The folder layout mirrors the pipeline stages:
+
+```
+projects/
+└── weather-app-gui/
+    ├── .kiro/agents/          # Agent configs (auto-copied)
+    ├── docs/
+    │   ├── requirements.md    # Product Owner output
+    │   ├── technical-spec.md  # Business Analyst output
+    │   └── architecture.md    # Architect output
+    ├── src/                   # Developer source code
+    ├── reviews/
+    │   ├── code-review.md     # Reviewer feedback
+    │   └── standards-review.md # Code Owner feedback
+    └── tests/
+        ├── test-plan.md       # QA test procedures
+        └── test-results.md    # QA test results
+```
+
+Duplicate task names automatically get a numeric suffix (`weather-app-gui-2`, etc.).
+
 ## Workers
 
 | Worker | Role | Tools |
@@ -60,26 +83,25 @@ The orchestrator automatically selects the right pipeline based on keywords in y
 - Python 3.12+
 - [Kiro CLI](https://kiro.dev/cli/) installed and authenticated (`kiro-cli login`)
 
-### Setup
+### Automated Setup
 
 ```bash
-# Clone the repo
+# macOS / Linux
 git clone https://github.com/YevheniL/kiro-ai-team.git
 cd kiro-ai-team
+bash doc/setup.sh
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Copy config and edit your settings
-cp config.yaml.example config.yaml
-
-# Register the agents with kiro-cli
-mkdir -p .kiro/agents
-cp agents/*.json .kiro/agents/
-
-# Verify agents are registered
-kiro-cli agent list
+# Windows (PowerShell)
+git clone https://github.com/YevheniL/kiro-ai-team.git
+cd kiro-ai-team
+powershell -ExecutionPolicy Bypass -File doc\setup.ps1
 ```
+
+The setup scripts check prerequisites, install Kiro CLI auth, install Python dependencies, create the config file, register agents, and verify everything works.
+
+### Manual Setup
+
+See [doc/SETUP.md](doc/SETUP.md) for detailed step-by-step instructions.
 
 ## Usage
 
@@ -120,9 +142,10 @@ kiro:
   default_model: "auto"
 
 project:
-  default_path: "."           # Default project directory
+  default_path: "."           # Base directory (falls back to cwd if invalid)
+  output_dir: "projects"      # Each task creates a subfolder here
 
-jira:                          # Optional Jira integration (placeholders)
+jira:                          # Optional Jira integration
   base_url: "https://your-company.atlassian.net"
   api_token: "YOUR_TOKEN"
 
@@ -140,8 +163,9 @@ workers:                       # Enable/disable individual workers
 kiro-ai-team/
 ├── main.py                    # Entry point (CLI + interactive)
 ├── config_loader.py           # YAML config with fallbacks
+├── project_scaffold.py        # Dynamic project folder creation
 ├── config.yaml.example        # Config template
-├── requirements.txt           # Python dependencies (pyyaml)
+├── requirements.txt           # Python dependencies
 ├── orchestrator/
 │   ├── engine.py              # Routes tasks, coordinates workers
 │   ├── router.py              # Keyword-based task routing
@@ -156,21 +180,14 @@ kiro-ai-team/
 │   ├── code_owner.py          # Standards enforcement
 │   └── qa.py                  # Testing
 ├── agents/                    # Kiro CLI custom agent JSON configs
-│   ├── product-owner.json
-│   ├── business-analyst.json
-│   ├── architect.json
-│   ├── developer.json
-│   ├── reviewer.json
-│   ├── code-owner.json
-│   └── qa.json
+├── doc/
+│   ├── SETUP.md               # Detailed setup guide
+│   ├── setup.sh               # macOS/Linux setup script
+│   └── setup.ps1              # Windows setup script
 ├── ui/
 │   └── console.py             # Colored real-time output
-└── tests/                     # 52 unit tests
-    ├── test_agents.py
-    ├── test_config.py
-    ├── test_pipeline.py
-    ├── test_router.py
-    └── test_workers.py
+├── tests/                     # Unit tests
+└── projects/                  # Task output (gitignored, created at runtime)
 ```
 
 ## Running Tests
