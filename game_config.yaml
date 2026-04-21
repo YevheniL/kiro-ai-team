@@ -1,0 +1,38 @@
+# Kiro Game AI Team Configuration
+
+# Kiro CLI settings
+kiro:
+  cli_path: "C:\\Users\\YeLevchenko\\AppData\\Local\\Kiro-Cli\\kiro-cli.exe"
+  default_model: "auto"
+
+# Default project directory
+project:
+  default_path: "D:/GameProject"
+  output_dir: "."
+
+# Worker settings — all game-specific roles
+workers:
+  game_developer:
+    enabled: true
+  game_qa:
+    enabled: true
+  game_architect:
+    enabled: true
+  game_code_owner:
+    enabled: true
+  game_reviewer:
+    enabled: true
+  game_product_owner:
+    enabled: true
+  game_business_analyst:
+    enabled: true
+  game_designer:
+    enabled: true
+  screenwriter:
+    enabled: true
+  level_designer:
+    enabled: true
+  artist:
+    enabled: true
+  graphical_designer:
+    enabled: true

@@ -35,6 +35,19 @@ WORKER_COLORS = {
     "Reviewer": Color.REVIEWER,
     "Product Owner": Color.ROUTE,
     "Business Analyst": Color.HANDOFF,
+    # Game team
+    "Game Developer": Color.DEVELOPER,
+    "Game QA": Color.QA,
+    "Game Architect": Color.ARCHITECT,
+    "Game Code Owner": Color.CODE_OWNER,
+    "Game Reviewer": Color.REVIEWER,
+    "Game Product Owner": Color.ROUTE,
+    "Game Business Analyst": Color.HANDOFF,
+    "Game Designer": Color.SUCCESS,
+    "Screenwriter": Color.HANDOFF,
+    "Level Designer": Color.CODE_OWNER,
+    "Artist": Color.ERROR,
+    "Graphical Designer": Color.DEVELOPER,
 }
 
 
@@ -153,6 +166,19 @@ def _worker_icon(name: str) -> str:
         "Reviewer": "📝",
         "Product Owner": "📋",
         "Business Analyst": "📊",
+        # Game team
+        "Game Developer": "🎮",
+        "Game QA": "🧪",
+        "Game Architect": "⚙️",
+        "Game Code Owner": "🔐",
+        "Game Reviewer": "📝",
+        "Game Product Owner": "📋",
+        "Game Business Analyst": "📊",
+        "Game Designer": "🎲",
+        "Screenwriter": "✍️",
+        "Level Designer": "🗺️",
+        "Artist": "🎨",
+        "Graphical Designer": "🖼️",
     }
     return icons.get(name, "🤖")
 

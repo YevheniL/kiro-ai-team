@@ -112,15 +112,34 @@ class BaseWorker(ABC):
 
         Uses UTF-8 encoding with error replacement to handle any character
         encoding issues cross-platform (Windows charmap, etc.).
+
+        For long prompts on Windows, writes the prompt to a temp file in the
+        project directory and tells kiro-cli to read and follow it.
         """
         resolved_path = os.path.abspath(project_path)
-        cmd = self._build_command(prompt)
 
         # Force UTF-8 environment for kiro-cli output
         env = os.environ.copy()
         env["PYTHONIOENCODING"] = "utf-8"
         if platform.system() == "Windows":
             env["PYTHONUTF8"] = "1"
+
+        # Windows CreateProcessW has a ~32767 char limit for the full command line.
+        # For long prompts, write to a file and pass a short reference command.
+        prompt_file_path = None
+        if platform.system() == "Windows" and len(prompt) > 20000:
+            prompt_file_path = os.path.join(resolved_path, "_kiro_task_prompt.md")
+            with open(prompt_file_path, "w", encoding="utf-8") as f:
+                f.write(prompt)
+
+            short_prompt = (
+                f"Read the file '_kiro_task_prompt.md' in the current directory. "
+                f"It contains your full task instructions. Follow ALL instructions "
+                f"in that file completely. Do not summarize — execute the task."
+            )
+            cmd = self._build_command(short_prompt)
+        else:
+            cmd = self._build_command(prompt)
 
         process = subprocess.Popen(
             cmd,
@@ -142,6 +161,13 @@ class BaseWorker(ABC):
         except subprocess.TimeoutExpired:
             process.kill()
             raise RuntimeError(f"kiro-cli timed out after {self.timeout}s")
+        finally:
+            # Clean up the prompt file
+            if prompt_file_path and os.path.exists(prompt_file_path):
+                try:
+                    os.unlink(prompt_file_path)
+                except OSError:
+                    pass
 
         if process.returncode != 0:
             raise RuntimeError(f"kiro-cli exited with code {process.returncode}")
